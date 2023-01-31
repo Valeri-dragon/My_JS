@@ -1,35 +1,76 @@
+"use strictа";
 const contentConteiner = document.getElementById("content");
-const title = "Project lesson02";
-const screens = "\"Простые\", \"Сложные\", \"Интерактивные\"";
-const screenPrice = 5768;
+let title = prompt("Как называется ваш проект?", "Пример: Милые попугаи");
+let screens = prompt(
+  "Какие типы экранов нужно разработать?",
+  '"Простые", "Сложные", "Интерактивные"'
+);
+let screenPrice = +prompt("Сколько будет стоить данная работа", "Пример: 5768");
 const rollback = 7;
-const fullPrice = 85435;
-const adaptive = true;
-let screensToLowSplit = screens.toLowerCase().split("\"\", ");
-let percentageOfKickback = Math.round(fullPrice *(rollback/100));
-console.log(typeof title);
-console.log(typeof fullPrice);
-console.log(typeof adaptive);
-console.log(screens.length);
-console.log("Стоимость верстки экранов " + screenPrice +" рублей" +'\n' +"Стоимость разработки сайтов " + fullPrice + " рублей");
-console.log(screensToLowSplit);
-console.log(percentageOfKickback);
+let adaptive = confirm("Нужен ли адаптив на сайте?");
+if (adaptive === true) {
+  adaptive = "Нужен";
+} else {
+  adaptive = "Не нужен";
+}
+let service1 = prompt(
+  "Нужна ли разработка дизайна логотипа или сайта?",
+  "К примеру: нужен логтип"
+);
+
+let servicePrice1 = +prompt(
+  "Сколько вы готовы заплатить за это",
+  "от 500 до 5000"
+);
+let service2 = prompt(
+  "Нужна ли анимация или встраивание видео?",
+  "К примеру: необходимо встроить видео"
+);
+let servicePrice2 = +prompt(
+  "Сколько вы готовы заплатить за это",
+  "от 3000 до 10000"
+);
+const fullPrice = screenPrice + servicePrice1 + servicePrice2;
+switch (true) {
+  case fullPrice < 0:
+    console.log("Что то пошло не так");
+    break;
+  case 0:
+  case 15000:
+  case 30000:
+    console.log(
+      "Для получения скидки в 5% стоимость должна быть свыше 15000, а для скидки в 10% свыше 30000"
+    );
+    break;
+  case fullPrice > 30000:
+    console.log("Даем скидку в 10%");
+    break;
+
+  case fullPrice > 15000 && fullPrice != 30000 && fullPrice < 30000:
+    console.log("Даем скидку в 5%");
+    break;
+  case (fullPrice != 15000 && fullPrice < 15000) || fullPrice > 0:
+    console.log("Скидка не предусмотрена");
+    break;
+}
+let servicePercentPrice = Math.ceil((fullPrice * rollback) / 100);
+
+let screensToLowSplit = screens.toLowerCase().split('"", ');
+
+console.log("Откат посреднику:" + +servicePercentPrice);
 contentConteiner.insertAdjacentHTML(
   "beforeend",
   `
-<p>${title} type ${typeof title}</p>
-<p>${fullPrice} type ${typeof fullPrice}</p>
-<p>adaptive ${adaptive} type ${typeof adaptive}</p>
-<p>${screens} length ${screens.length}</p>
-<p>${
-    "Стоимость верстки экранов " +
-    screenPrice +
-    " рублей"} <br>
-    ${
-    "Стоимость разработки сайтов " +
-    fullPrice +
-    " рублей"
-  }</p>
-<p>${screensToLowSplit}</p>
+<p>Название проекта: ${title} </p>
+<p>Какой тип экрнов разрабатываем:  ${screensToLowSplit}</p>
+<p>"Стоимость верстки экранов " + ${screenPrice} + " рублей" <br>
+<p>Нужен ли адаптив:  ${adaptive} </p>
+<p>дополнительная услуга №1: ${service1} 
+<span>Стоимость дополнительной  услуги №1: ${servicePrice1} </span></p>
+<p>дополнительная услуга №2: ${service2} 
+<span>Стоимость дополнительной  услуги №1: ${servicePrice2} </span></p>
+
+    ${"Стоимость разработки сайтов " + fullPrice}</p>
+    <p>Откат посреднику: ${servicePercentPrice}</p>
 `
 );
