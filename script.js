@@ -1,99 +1,135 @@
 "use strict";
 const contentConteiner = document.getElementById("content");
-let title = prompt("Как называется ваш проект?", "Пример: Милые попугаи");
-let screens = prompt("Какие типы экранов нужно разработать?",  '"Простые", "Сложные", "Интерактивные"');
-let screenPrice = +prompt("Сколько будет стоить данная работа", "Пример: 5768");
-let adaptive = confirm("Нужен ли адаптив на сайте?");
-let service1 = prompt( "Нужна ли разработка дизайна логотипа или сайта?",  "К примеру: нужен логтип");
-let servicePrice1 = +prompt( "Сколько вы готовы заплатить за это",  "от 500 до 5000");
-let service2 = prompt( "Нужна ли анимация или встраивание видео?",  "К примеру: необходимо встроить видео");
-let servicePrice2 = +prompt(  "Сколько вы готовы заплатить за это",  "от 3000 до 10000");
+
+let title;
+let screens;
+let screenPrice;
+let adaptive;
 const rollback = 7;
-//const fullPrice = screenPrice + servicePrice1 + servicePrice2;
-//let  = Math.ceil(fullPrice -(fullPrice *( rollback / 100)));
+let allServicePrices;
+let fullPrice;
+let servicePercentPrice;
+let service1;
+let service2;
 
-let allServicePrices, fullPrice, servicePercentPrice;
+const showTypeOf = function (variable) {
+  console.log(variable, typeof variable);
+};
 
-const showTypeOf = function(variable){
-console.log(variable, typeof variable);
-}
+const getRollbackMessage = function (price) {
+  switch (true) {
+    case price < 0:
+      return "Что то пошло не так";
+      break;
+    case 0:
+    case 15000:
+    case 30000:
+      return;
+      "Для получения скидки в 5% стоимость должна быть свыше 15000, а для скидки в 10% свыше 30000";
+      break;
+    case price > 30000:
+      return "Даем скидку в 10%";
+      break;
 
-const getRollbackMessage = function(price){
-switch (true) {
-  case price < 0:
-    return "Что то пошло не так";
-    break;
-  case 0:
-  case 15000:
-  case 30000:
-    return;
-    "Для получения скидки в 5% стоимость должна быть свыше 15000, а для скидки в 10% свыше 30000";
-    break;
-  case price > 30000:
-    return "Даем скидку в 10%";
-    break;
+    case price > 15000 && price != 30000 && price < 30000:
+      return "Даем скидку в 5%";
+      break;
+    case (price != 15000 && price < 15000) || price > 0:
+      return "Скидка не предусмотрена";
+      break;
+  }
+};
 
-  case price > 15000 && price != 30000 && price < 30000:
-    return "Даем скидку в 5%";
-    break;
-  case (price != 15000 && price < 15000) || price > 0:
-    return "Скидка не предусмотрена";
-    break;
-}
-}
+const isNumber = function (num) {
+  if (num !== null) {
+    let numb = num.toString().trim().replaceAll(/[+=-]/g, "");
+    let num1 = Number(numb);
 
-const getAllServicePrices = function (a=0, b=0) {
-  return a + b;
+    if (num1 > 0) {
+      return num1; 
+    }
+  }
+};
 
-}
+const asking = function () {
+  title = prompt("Как называется ваш проект?", "Калькулятор верстки");
+  screens = prompt("Какие типы экранов нужно разработать?", "Простые, Сложные");
 
-function getFullPrice(a=0, b=0){
+  screenPrice = prompt("Сколько будет стоить данная работа", 15000);
+
+  do {
+    screenPrice = prompt("Сколько будет стоить данная работа", 15000);
+  } while (!isNumber(screenPrice));
+  adaptive = confirm("Нужен ли адаптив на сайте?");
+  if (adaptive === true) {
+    adaptive = "Нужен";
+  } else {
+    adaptive = "Не нужен";
+  }
+};
+
+const getAllServicePrices = function () {
+  let sum = 0;
+  for (let i = 0; i < 2; i++) {
+    if (i === 0) {
+      service1 = prompt(
+        "Нужна ли разработка дизайна логотипа или сайта?",
+        "К примеру: нужен логотип"
+      );
+    } else if (i === 1) {
+      service2 = prompt(
+        "Нужна ли анимация или встраивание видео?",
+        "К примеру: необходимо встроить видео"
+      );
+    }
+let servicePrice;
+    do {
+      servicePrice = prompt(
+        "Сколько вы готовы заплатить за это",
+        "от 3000 до 10000"
+      );
+    } while (!isNumber(servicePrice));
+
+    sum += +isNumber(servicePrice); 
+  }
+  
+  return sum
+};
+
+function getFullPrice(a = 0, b = 0) {
   return a + b;
 }
 
 const getTitle = function (str) {
-  let strLitle = str.trim(" ").substring(1).toLowerCase();
-  let strUp = str.trim(" ").substring(0, 1).toUpperCase();
-
-  return strUp + strLitle;
+  return str.trim(" ")[0].toUpperCase() + str.trim(" ").substr(1).toLowerCase();
 };
-const getServiPercenctPrices = function (a, callback) {
-  return a - callback(a, rollback);
-};
-if (adaptive === true) {
-  adaptive = "Нужен";
-} else {
-  adaptive = "Не нужен";
-}
 
-allServicePrices = getAllServicePrices(servicePrice1, servicePrice2);
-fullPrice = getFullPrice(screenPrice, allServicePrices);
-servicePercentPrice = getServiPercenctPrices(
-  fullPrice,
-  function (fullPrice, rollback) {
-   return fullPrice*(rollback/100)
-  }
-);
+const getServiPercenctPrices = function () {
+  return fullPrice - fullPrice * (rollback / 100);
+};
+asking();
+allServicePrices = getAllServicePrices();
+fullPrice = getFullPrice(isNumber(screenPrice), allServicePrices);
+servicePercentPrice = getServiPercenctPrices();
 showTypeOf(getTitle(title));
-showTypeOf(fullPrice);
+showTypeOf(screenPrice);
 showTypeOf(adaptive);
-
 
 contentConteiner.insertAdjacentHTML(
   "beforeend",
   `
-<p>Название проекта: ${getTitle(title)} </p>
-<p>Какой тип экрнов разрабатываем:  ${screens}</p>
-<p>Стоимость верстки экранов   ${screenPrice}   рублей <br>
+<p>Ваша скидка:   ${getRollbackMessage(fullPrice)}</p>
+<p>Название вашего проекта: «${getTitle(title)}» </p>
+<p>Разрабатываемый тип экранов:  ${screens}</p>
+<p>Стоимость верстки экранов:   ${isNumber(screenPrice)}   рублей <br>
 <p>Нужен ли адаптив:  ${adaptive} </p>
-<p>дополнительная услуга №1: ${service1} 
-<span>Стоимость дополнительной  услуги №1: ${servicePrice1} </span></p>
-<p>дополнительная услуга №2: ${service2} 
-<span>Стоимость дополнительной  услуги №1: ${servicePrice2} </span></p>
-
-   <p> Стоимость разработки сайтов ${servicePercentPrice}</p>
-    <p>Ваша скидка составит  ${getRollbackMessage(fullPrice)}</p>
-    <p>Откат посреднику:   ${fullPrice - servicePercentPrice}</p>
+<ul>
+<li>Дополнительная услуга №1: ${service1} </li>
+<li>Дополнительная услуга №2: ${service2} </li>
+<li>Стоимость дополнительных  услуг: ${allServicePrices} </li>
+</ul>
+<p>Общая стоимость разработки вашего проекта: ${fullPrice}</p>
+<p> Стоимость разработки сайта ${servicePercentPrice}</p>
+<p>Откат посреднику:   ${fullPrice - servicePercentPrice}</p>
 `
 );
-
