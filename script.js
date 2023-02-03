@@ -53,9 +53,9 @@ switch (true) {
     console.log("Скидка не предусмотрена");
     break;
 }
-let servicePercentPrice = Math.ceil((fullPrice * rollback) / 100);
+const servicePercentPrice = Math.ceil((fullPrice * rollback) / 100);
 
-let screensToLowSplit = screens.toLowerCase().split('"", ');
+const screensToLowSplit = screens.toLowerCase().split('"", ');
 
 console.log("Откат посреднику:" + +servicePercentPrice);
 contentConteiner.insertAdjacentHTML(
@@ -63,7 +63,7 @@ contentConteiner.insertAdjacentHTML(
   `
 <p>Название проекта: ${title} </p>
 <p>Какой тип экрнов разрабатываем:  ${screensToLowSplit}</p>
-<p>"Стоимость верстки экранов " + ${screenPrice} + " рублей" <br>
+<p>Стоимость верстки экранов  ${screenPrice} + рублей <br>
 <p>Нужен ли адаптив:  ${adaptive} </p>
 <p>дополнительная услуга №1: ${service1} 
 <span>Стоимость дополнительной  услуги №1: ${servicePrice1} </span></p>
