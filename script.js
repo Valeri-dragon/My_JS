@@ -1,22 +1,37 @@
 "use strict";
-const contentConteiner = document.getElementById("content");
 
-let title;
-let screens;
-let screenPrice;
-let adaptive;
-const rollback = 7;
-let allServicePrices;
-let fullPrice;
-let servicePercentPrice;
-let service1;
-let service2;
+const appData = {
+  contentConteiner: document.getElementById("content"),
+  title: "",
+  screens: "",
+  screenPrice: 0,
+  adaptive: true,
+  rollback: 7,
+  allServicePrices: 0,
+  fullPrice: 0,
+  servicePercentPrice: 0,
+  service1: "",
+  service2: "",
+  asking: function () {
+  appData.title = prompt("Как называется ваш проект?", "Калькулятор верстки");
+  appData.screens = prompt(
+    "Какие типы экранов нужно разработать?",
+    "Простые, Сложные"
+  );
 
-const showTypeOf = function (variable) {
-  console.log(variable, typeof variable);
-};
+  appData.screenPrice = prompt("Сколько будет стоить данная работа", 15000);
 
-const getRollbackMessage = function (price) {
+  do {
+    appData.screenPrice = prompt("Сколько будет стоить данная работа", 15000);
+  } while (!appData.isNumber(appData.screenPrice));
+  appData.adaptive = confirm("Нужен ли адаптив на сайте?");
+  if (appData.adaptive === true) {
+    appData.adaptive = "Нужен";
+  } else {
+    appData.adaptive = "Не нужен";
+  }
+},
+getRollbackMessage: function (price) {
   switch (true) {
     case price < 0:
       return "Что то пошло не так";
@@ -38,98 +53,96 @@ const getRollbackMessage = function (price) {
       return "Скидка не предусмотрена";
       break;
   }
-};
-
-const isNumber = function (num) {
+},
+isNumber: function (num) {
   if (num !== null) {
-    let numb = num.toString().trim().replaceAll(/[+=-]/g, "");
+    let numb = num
+      .toString()
+      .trim()
+      .replaceAll(/["+=-]/g, "");
     let num1 = Number(numb);
 
     if (num1 > 0) {
-      return num1; 
+      return num1;
     }
   }
-};
-
-const asking = function () {
-  title = prompt("Как называется ваш проект?", "Калькулятор верстки");
-  screens = prompt("Какие типы экранов нужно разработать?", "Простые, Сложные");
-
-  screenPrice = prompt("Сколько будет стоить данная работа", 15000);
-
-  do {
-    screenPrice = prompt("Сколько будет стоить данная работа", 15000);
-  } while (!isNumber(screenPrice));
-  adaptive = confirm("Нужен ли адаптив на сайте?");
-  if (adaptive === true) {
-    adaptive = "Нужен";
-  } else {
-    adaptive = "Не нужен";
-  }
-};
-
-const getAllServicePrices = function () {
+},
+getAllServicePrices: function () {
   let sum = 0;
   for (let i = 0; i < 2; i++) {
+    let servicePrice = 0;
     if (i === 0) {
-      service1 = prompt(
+      appData.service1 = prompt(
         "Нужна ли разработка дизайна логотипа или сайта?",
         "К примеру: нужен логотип"
       );
     } else if (i === 1) {
-      service2 = prompt(
+      appData.service2 = prompt(
         "Нужна ли анимация или встраивание видео?",
         "К примеру: необходимо встроить видео"
       );
     }
-let servicePrice;
+
     do {
       servicePrice = prompt(
         "Сколько вы готовы заплатить за это",
         "от 3000 до 10000"
       );
-    } while (!isNumber(servicePrice));
+    } while (!appData.isNumber(servicePrice));
 
-    sum += +isNumber(servicePrice); 
+    sum += +appData.isNumber(servicePrice);
   }
-  
-  return sum
-};
 
-function getFullPrice(a = 0, b = 0) {
+  return sum;
+},
+ getFullPrice: function(a = 0, b = 0) {
   return a + b;
-}
+},
 
-const getTitle = function (str) {
+getTitle: function (str) {
   return str.trim(" ")[0].toUpperCase() + str.trim(" ").substr(1).toLowerCase();
-};
+},
 
-const getServiPercenctPrices = function () {
-  return fullPrice - fullPrice * (rollback / 100);
-};
-asking();
-allServicePrices = getAllServicePrices();
-fullPrice = getFullPrice(isNumber(screenPrice), allServicePrices);
-servicePercentPrice = getServiPercenctPrices();
-showTypeOf(getTitle(title));
-showTypeOf(screenPrice);
-showTypeOf(adaptive);
+getServiPercenctPrices: function () {
+  return appData.fullPrice - appData.fullPrice * (appData.rollback / 100);
+},
 
-contentConteiner.insertAdjacentHTML(
+start: function(){
+appData.asking();
+appData.allServicePrices = appData.getAllServicePrices();
+appData.fullPrice = appData.getFullPrice(
+  appData.isNumber(appData.screenPrice),
+  appData.allServicePrices
+);
+appData.servicePercentPrice = appData.getServiPercenctPrices();
+appData.contentConteiner.insertAdjacentHTML(
   "beforeend",
   `
-<p>Ваша скидка:   ${getRollbackMessage(fullPrice)}</p>
-<p>Название вашего проекта: «${getTitle(title)}» </p>
-<p>Разрабатываемый тип экранов:  ${screens}</p>
-<p>Стоимость верстки экранов:   ${isNumber(screenPrice)}   рублей <br>
-<p>Нужен ли адаптив:  ${adaptive} </p>
+<p>Ваша скидка:   ${appData.getRollbackMessage(appData.fullPrice)}</p>
+<p>Название вашего проекта: «${appData.getTitle(appData.title)}» </p>
+<p>Разрабатываемый тип экранов:  ${appData.screens}</p>
+<p>Стоимость верстки экранов:   ${appData.isNumber(
+    appData.screenPrice
+  )}   рублей <br>
+<p>Нужен ли адаптив:  ${appData.adaptive} </p>
 <ul>
-<li>Дополнительная услуга №1: ${service1} </li>
-<li>Дополнительная услуга №2: ${service2} </li>
-<li>Стоимость дополнительных  услуг: ${allServicePrices} </li>
+<li>Дополнительная услуга №1: ${appData.service1} </li>
+<li>Дополнительная услуга №2: ${appData.service2} </li>
+<li>Стоимость дополнительных  услуг: ${appData.allServicePrices} </li>
 </ul>
-<p>Общая стоимость разработки вашего проекта: ${fullPrice}</p>
-<p> Стоимость разработки сайта ${servicePercentPrice}</p>
-<p>Откат посреднику:   ${fullPrice - servicePercentPrice}</p>
+<p>Общая стоимость разработки вашего проекта: ${appData.fullPrice}</p>
+<p> Стоимость разработки сайта ${appData.servicePercentPrice}</p>
+<p>Откат посреднику:   ${appData.fullPrice - appData.servicePercentPrice}</p>
 `
 );
+appData.logger()
+},
+logger: function(){
+for(let key in appData){
+ console.log(key)
+}
+},
+};
+
+appData.start()
+
