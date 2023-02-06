@@ -24,13 +24,13 @@ const appData = {
         "Как называется ваш проект?",
         "Калькулятор верстки"
       );
-    } while (appData.isNumber(appData.title));
+    } while (!isNaN(appData.title));
 
     for (let i = 0; i < 2; i++) {
       let name = "";
       do {
         name = prompt("Какие типы экранов нужно разработать?");
-      } while (appData.isNumber(name));
+      } while (!isNaN(name));
 
       let price = 0;
       do {
@@ -50,7 +50,7 @@ const appData = {
           "Какой дополнительный тип услуги нужен?",
           "К примеру: логотип, анимация"
         );
-      } while (appData.isNumber(name));
+      } while (!isNaN(name));
       let servicePrice = 0;
       do {
         servicePrice = prompt(
