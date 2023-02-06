@@ -3,6 +3,7 @@
 const appData = {
   contentConteiner: document.getElementById("content"),
   title: "",
+  askPromt: "",
   screens: [],
   screeType: "",
   screenPrice: 0,
@@ -13,25 +14,22 @@ const appData = {
   servicePercentPrice: 0,
   servicesType: "",
   services: {},
-  isStr: function (str) {
+  isStr: function (str, ask) {
     do {
-      str;
-    } while (appData.isNumber(str));
+      str = prompt(ask);
+    } while (!isNaN(str));
+    return str;
   },
   asking: function () {
-    do {
-      appData.title = prompt(
-        "Как называется ваш проект?",
-        "Калькулятор верстки"
-      );
-    } while (!isNaN(appData.title));
+    appData.askPromt = "Как называется ваш проект?";
+    appData.title = appData.askPromt;
+    appData.isStr(appData.title, appData.askPromt);
 
     for (let i = 0; i < 2; i++) {
       let name = "";
-      do {
-        name = prompt("Какие типы экранов нужно разработать?");
-      } while (!isNaN(name));
-
+      appData.askPromt = "Какие типы экранов нужно разработать?";
+      name = appData.askPromt;
+      appData.isStr(name, appData.askPromt);
       let price = 0;
       do {
         price = prompt("Сколько будет стоить данная работа", 15000);
@@ -45,12 +43,10 @@ const appData = {
 
     for (let i = 0; i < 2; i++) {
       let name = "";
-      do {
-        name = prompt(
-          "Какой дополнительный тип услуги нужен?",
-          "К примеру: логотип, анимация"
-        );
-      } while (!isNaN(name));
+      appData.askPromt = "Какой дополнительный тип услуги нужен?";
+      name = appData.askPromt;
+      appData.isStr(name, appData.askPromt);
+
       let servicePrice = 0;
       do {
         servicePrice = prompt(
