@@ -1,35 +1,36 @@
 "use strict";
 
-const btns = document.getElementsByClassName("handler_btn");
-const btnAdd = document.querySelector(".screen-btn");
+
+const scoreBtns = document.getElementsByClassName("handler_btn");
+const plusBtn = document.querySelector(".screen-btn");
 const percent = document.querySelectorAll(".other-items.percent");
 const number = document.querySelectorAll(".other-items.number");
-const inputRange = document
-  .querySelector(".rollback input")
-  .hasAttribute("type", "range");
+const inputRange = document.querySelector(".rollback input").hasAttribute("type", "range");
 const valueInput = document.querySelector(".rollback span.range-value");
 const totalInput = document.getElementsByClassName("total-input");
-
+let totalInput1;
+let totalInput2;
+let totalInput3;
+let totalInput4;
+let totalInput5;
 let title = document.getElementsByTagName("h1");
 let screens = document.querySelectorAll(".screen");
 
-for (let keyTitle of title) {
-  title = keyTitle;
-}
-for (let i = 0; i < btns.length; i++) {
-  console.log(btns[i]);
-}
-for (let i = 0; i < totalInput.length; i++) {
-  console.log(totalInput[i]);
-}
+ 
 
-console.log(title);
-console.log(btnAdd);
+console.log(title[0]);
+console.log(scoreBtns); 
+console.log(plusBtn);
 console.log(percent);
 console.log(number);
 console.log(inputRange);
 console.log(valueInput);
 console.log(screens);
+  console.log((totalInput1 = totalInput[0]));
+  console.log((totalInput2 = totalInput[1]));
+  console.log((totalInput3 = totalInput[2]));
+  console.log((totalInput4 = totalInput[3]));
+  console.log((totalInput5 = totalInput[4]));
 const appData = {
   contentConteiner: document.getElementById("content"),
   title: "",
