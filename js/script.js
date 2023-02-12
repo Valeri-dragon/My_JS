@@ -54,20 +54,22 @@ const appData = {
     totalCountRollback.value = appData.servicePercentPrice;
   },
   addScreens: function () {
+     
     screens = document.querySelectorAll(".screen");
     screens.forEach(function (itemScreen, index) {
       const select = itemScreen.querySelector("select");
       const input = itemScreen.querySelector("input");
       const selectName = select.options[select.selectedIndex].textContent;
-      if (selectName == "Тип экранов" && +input.value >= 0) {
-  appData.init()
+      if ((selectName == "Тип экранов" && +input.value >= 0) || input.value === "Количество экранов") {
+           
+                               appData.init();
       } else {
-       appData.screens.push({
-         id: index,
-         name: selectName,
-         count: +input.value,
-         price: +select.value * +input.value,
-       });
+        appData.screens.push({
+          id: index,
+          name: selectName,
+          count: +input.value,
+          price: +select.value * +input.value,
+        });
       }
       
     });
@@ -99,7 +101,6 @@ const appData = {
 
   addPrices: function () {
     appData.rollback = +inputRange.value;
-
     for (let screen of appData.screens) {
       appData.screenType += screen.name + ", ";
       appData.screenCount += screen.count;
