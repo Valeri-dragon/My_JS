@@ -39,8 +39,7 @@ const appData = {
     appData.addTitle();
     startBtn.addEventListener("click", appData.start);
     plusBtn.addEventListener("click", appData.addScreenBlock);
-    startBtn.addEventListener("click", appData.noValues);
-    inputRange.addEventListener("input", function (event) {
+     inputRange.addEventListener("input", function (event) {
       appData.rollbackValue(event);
     });
   },
@@ -60,22 +59,18 @@ const appData = {
       const select = itemScreen.querySelector("select");
       const input = itemScreen.querySelector("input");
       const selectName = select.options[select.selectedIndex].textContent;
-      appData.screens.push({
-        id: index,
-        name: selectName,
-        count: +input.value,
-        price: +select.value * +input.value,
-      });
-    });
-  },
-  noValues: function () {
-    for (let screen of appData.screens) {
-      if (screen.name == "Тип экранов" && screen.count >= 0) {
-        startBtn.disabled = true;
+      if (selectName == "Тип экранов" && +input.value >= 0) {
+  appData.init()
       } else {
-        startBtn.disabled = false;
+       appData.screens.push({
+         id: index,
+         name: selectName,
+         count: +input.value,
+         price: +select.value * +input.value,
+       });
       }
-    }
+      
+    });
   },
   addServices: function () {
     otherItemsPercent.forEach(function (item, index) {
@@ -96,7 +91,9 @@ const appData = {
     });
   },
   addScreenBlock: function () {
+    
     let clonScreen = screens[0].cloneNode(true);
+    
     screens[screens.length - 1].after(clonScreen);
   },
 
