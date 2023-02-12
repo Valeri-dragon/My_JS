@@ -39,7 +39,7 @@ const appData = {
     appData.addTitle();
     startBtn.addEventListener("click", appData.start);
     plusBtn.addEventListener("click", appData.addScreenBlock);
-     inputRange.addEventListener("input", function (event) {
+    inputRange.addEventListener("input", function (event) {
       appData.rollbackValue(event);
     });
   },
@@ -54,15 +54,16 @@ const appData = {
     totalCountRollback.value = appData.servicePercentPrice;
   },
   addScreens: function () {
-     
     screens = document.querySelectorAll(".screen");
     screens.forEach(function (itemScreen, index) {
       const select = itemScreen.querySelector("select");
       const input = itemScreen.querySelector("input");
       const selectName = select.options[select.selectedIndex].textContent;
-      if ((selectName == "Тип экранов" && +input.value >= 0) || input.value === "Количество экранов") {
-           
-                               appData.init();
+      if (
+        (selectName == "Тип экранов" && +input.value >= 0) ||
+        input.value === "Количество экранов"
+      ) {
+        appData.init();
       } else {
         appData.screens.push({
           id: index,
@@ -71,7 +72,6 @@ const appData = {
           price: +select.value * +input.value,
         });
       }
-      
     });
   },
   addServices: function () {
@@ -93,9 +93,8 @@ const appData = {
     });
   },
   addScreenBlock: function () {
-    
-    let clonScreen = screens[0].cloneNode(true);
-    
+        let clonScreen = screens[0].cloneNode(true);
+    clonScreen.querySelector("input[type=text]").value = "";
     screens[screens.length - 1].after(clonScreen);
   },
 
