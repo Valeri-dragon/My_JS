@@ -16,7 +16,9 @@ const totalCount = document.getElementsByClassName("total-input")[1];
 const totalCountOther = document.getElementsByClassName("total-input")[2];
 const fullTotalCount = document.getElementsByClassName("total-input")[3];
 const totalCountRollback = document.getElementsByClassName("total-input")[4];
-
+const mainControlsViews = document.getElementsByClassName(
+  "main-controls__views"
+)[0];
 let screens = document.querySelectorAll(".screen");
 
 const appData = {
@@ -54,8 +56,10 @@ const appData = {
     totalCountRollback.value = appData.servicePercentPrice;
   },
   addScreens: function () {
+    
     screens = document.querySelectorAll(".screen");
     screens.forEach(function (itemScreen, index) {
+      appData.screens = [];
       const select = itemScreen.querySelector("select");
       const input = itemScreen.querySelector("input");
       const selectName = select.options[select.selectedIndex].textContent;
@@ -75,8 +79,8 @@ const appData = {
     });
   },
   addServices: function () {
-    otherItemsPercent.forEach(function (item, index) {
-      const check = item.querySelector("input[type=checkbox]");
+       otherItemsPercent.forEach(function (item, index) {
+          const check = item.querySelector("input[type=checkbox]");
       const label = item.querySelector("label");
       const inputText = item.querySelector("input[type=text]");
       if (check.checked) {
@@ -84,7 +88,7 @@ const appData = {
       }
     });
     otherItemsNumber.forEach(function (item, index) {
-      const check = item.querySelector("input[type=checkbox]");
+           const check = item.querySelector("input[type=checkbox]");
       const label = item.querySelector("label");
       const inputText = item.querySelector("input[type=text]");
       if (check.checked) {
@@ -96,9 +100,10 @@ const appData = {
         let clonScreen = screens[0].cloneNode(true);
     clonScreen.querySelector("input[type=text]").value = "";
     screens[screens.length - 1].after(clonScreen);
-  },
+    },
 
   addPrices: function () {
+    
     appData.rollback = +inputRange.value;
     for (let screen of appData.screens) {
       appData.screenType += screen.name + ", ";
